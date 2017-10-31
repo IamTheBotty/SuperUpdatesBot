@@ -33,7 +33,7 @@
                     <assembleDirectory>target</assembleDirectory>
                     <programs>
                         <program>
-                            <mainClass>src.main.java.TelegramUpdatesBot</mainClass>
+                            <mainClass>main.java.TelegramUpdatesBot</mainClass>
                             <name>workerBot</name>
                         </program>
                     </programs>
