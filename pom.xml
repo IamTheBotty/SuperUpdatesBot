@@ -34,7 +34,7 @@
                     <programs>
                         <program>
                             <mainClass>src.main.java.TelegramUpdatesBot</mainClass>
-                            <name>TelegramUpdatesBot</name>
+                            <name>workerBot</name>
                         </program>
                     </programs>
                 </configuration>
