@@ -41,7 +41,9 @@ public class TelegramUpdatesBot extends TelegramLongPollingBot {
             if (rg.contains(messageTxt)) {
                 sendMsg(message, rg.getReply(), true);
             }
-            else {
+            else if (messageTxt.contains("@FinancialUpdatesBot")) {
+                sendMsg(message, ug.getMessage(), false);
+            } else {
                 double d = Math.random();
                 if (d < 0.1) {
                     sendMsg(message, ug.getMessage(), false);
