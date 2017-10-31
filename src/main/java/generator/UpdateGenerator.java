@@ -3,6 +3,8 @@ package main.java.generator;
 import java.util.*;
 
 /**
+ * Сообщение финансового апдейта
+ *
  * Created by apdeit on 31.10.17.
  */
 public class UpdateGenerator {
