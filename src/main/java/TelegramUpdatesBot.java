@@ -38,11 +38,11 @@ public class TelegramUpdatesBot extends TelegramLongPollingBot {
         Message message = update.getMessage();
         if (message != null && message.hasText()) {
             String messageTxt = message.getText();
-            if (rg.contains(messageTxt)) {
-                sendMsg(message, rg.getReply(), true);
-            }
-            else if (messageTxt.contains("@FinancialUpdatesBot")) {
+            if (messageTxt.contains("@FinancialUpdatesBot")) {
                 sendMsg(message, ug.getMessage(), false);
+            }
+            else if (rg.contains(messageTxt)) {
+                sendMsg(message, rg.getReply(), true);
             } else {
                 double d = Math.random();
                 if (d < 0.1) {
