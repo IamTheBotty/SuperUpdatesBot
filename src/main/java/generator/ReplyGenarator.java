@@ -7,7 +7,7 @@ import java.util.Random;
  */
 public class ReplyGenarator {
 
-    private String[] keyWords = {"апдейт", "комиссаров", "Комиссаров", "банковск", "Банковск", "деньги",
+    private String[] keyWords = {"апдейт", "Апдейт", "комиссаров", "Комиссаров", "банковск", "Банковск", "деньги",
             "денег", "зарплат", "Деньги", "Денег", "письмо", "Письмо"};
 
     private String[] messages = {

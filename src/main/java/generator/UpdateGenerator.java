@@ -100,22 +100,27 @@ public class UpdateGenerator {
         sj.append(intro[random.nextInt(intro.length)]);
         sj.append("\n\n");
 
-        int mainCount = random.nextInt(2) + 2;
+        int mainCount = random.nextInt(2) + 4;
         List<Integer> numbers = new ArrayList<Integer>();
         for (int i = 0; i < mainCount; i++) {
             numbers.add(random.nextInt(main.length));
         }
         Set<Integer> numbersDistinct = new HashSet<Integer>(numbers);
+        int ii = 0;
         for (Integer i : numbersDistinct) {
             sj.append(main[i]).append(" ");
+            ii++;
+            if (numbersDistinct.size() > 4 && ii == 4) {
+                sj.append("\n\n");
+            }
         }
 
-        if (Math.random() < 0.6) {
+        if (Math.random() < 0.7) {
             sj.append("\n\n");
             sj.append(buy[random.nextInt(buy.length)]);
         }
 
-        if (Math.random() < 0.6) {
+        if (Math.random() < 0.7) {
             sj.append("\n\n");
             sj.append(myOffice[random.nextInt(myOffice.length)]);
         }
