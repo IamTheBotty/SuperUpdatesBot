@@ -36,7 +36,8 @@ public class TelegramUpdatesBot extends TelegramLongPollingBot {
         UpdateGenerator ug = new UpdateGenerator();
 
         Message message = update.getMessage();
-        if (message != null && message.hasText()) {
+//        if (message != null && message.hasText()) {
+        if (message == null) {
             String messageTxt = message.getText();
             if (messageTxt.contains("@FinancialUpdatesBot")) {
                 sendMsg(message, ug.getMessage(), false);
