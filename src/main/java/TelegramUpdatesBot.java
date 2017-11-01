@@ -1,7 +1,8 @@
 package main.java;
 
-import main.java.generator.ReplyGenarator;
 import main.java.generator.UpdateGenerator;
+import main.java.generator.ReplyGenerator;
+import org.telegram.telegrambots.api.objects.Chat;
 import org.telegram.telegrambots.exceptions.TelegramApiException;
 import org.telegram.telegrambots.ApiContextInitializer;
 import org.telegram.telegrambots.TelegramBotsApi;
@@ -9,11 +10,16 @@ import org.telegram.telegrambots.api.methods.send.SendMessage;
 import org.telegram.telegrambots.api.objects.Message;
 import org.telegram.telegrambots.api.objects.Update;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
+import utils.WhiteList;
 
 import static utils.Confidentional.checkChatId;
-import static utils.Confidentional.getAllIds;
+import static utils.Confidentional.getAllRegisteredChatsInfo;
 
 public class TelegramUpdatesBot extends TelegramLongPollingBot {
+
+    private WhiteList whiteList = new WhiteList();
+    private ReplyGenerator rg = new ReplyGenerator();
+    private UpdateGenerator ug = new UpdateGenerator();
 
     public static void main(String[] args) {
         ApiContextInitializer.init();
@@ -35,39 +41,46 @@ public class TelegramUpdatesBot extends TelegramLongPollingBot {
     }
 
     public void onUpdateReceived(Update update) {
-        ReplyGenarator rg = new ReplyGenarator();
-        UpdateGenerator ug = new UpdateGenerator();
 
         Message receivedMsg = update.getMessage();
         if (checkChatId(receivedMsg)) {
-            logChatIds();
+            logChatInfo(receivedMsg.getChat());
+            logMessage(getAllRegisteredChatsInfo());
         }
 
-        if (receivedMsg != null && receivedMsg.hasText() && receivedMsg.getText().equals("getChatId")) {
-            String secretMessage = receivedMsg.getChatId().toString();
-            sendMsg(receivedMsg, "This chat ID: " + secretMessage, true);
-        }
-
-        //test
+        //test msg
         if (receivedMsg != null && receivedMsg.hasText() && receivedMsg.getText().equals("ping ping, kd")) {
-            String secretMessage = receivedMsg.getChatId().toString();
-            sendMsg(receivedMsg, "Hello! This is a secret message from me.", true);
+            logMessage("Hello! This is a secret message from me.");
         }
 
-
-//        if (receivedMsg != null && receivedMsg.hasText()) {
-        if (receivedMsg == null) {
+        if (checkMessage(receivedMsg) < 0) {
             String receivedTxt = receivedMsg.getText();
-            if (receivedTxt.contains("@FinancialUpdatesBot")) {
-                sendMsg(receivedMsg, ug.getMessage(), false);
-            } else if (rg.contains(receivedTxt)) {
-                sendMsg(receivedMsg, rg.getReply(), true);
-            } else {
-                double d = Math.random();
-                if (d < 0.1) {
+
+            if (receivedMsg.isCommand()) {
+                if (receivedTxt.contains("/start")) {
+                    sendMsg(receivedMsg, "Коллеги, добрый день!", false);
+                }
+                else if (receivedTxt.contains("/over")) {
+                    sendMsg(receivedMsg, "Коллеги, банковский день окончен", false);
+                }
+                else if (receivedTxt.contains("/update") || receivedTxt.contains("@FinancialUpdatesBot")) {
                     sendMsg(receivedMsg, ug.getMessage(), false);
                 }
             }
+
+            else if (receivedTxt.contains("@FinancialUpdatesBot")) {
+                sendMsg(receivedMsg, ug.getMessage(), false);
+            }
+            else if (rg.contains(receivedTxt)) {
+                sendMsg(receivedMsg, rg.getReply(), false);
+            } else {
+                double d = Math.random();
+                if (d < 0.08) {
+                    sendMsg(receivedMsg, ug.getMessage(), false);
+                }
+            }
+        } else if (checkMessage(receivedMsg) > 0) {
+            sendMsg(receivedMsg, rg.getReply(), false);
         }
     }
 
@@ -86,17 +99,6 @@ public class TelegramUpdatesBot extends TelegramLongPollingBot {
         }
     }
 
-    public void logChatIds() {
-        StringBuilder sb = new StringBuilder();
-        int i = 1;
-        for (Long l : getAllIds()) {
-            sb.append(i).append(". ");
-            sb.append(l.toString()).append("\n");
-            i++;
-        }
-        logMessage(sb.toString());
-    }
-
     public void logMessage(String text) {
         String logChatId = "-312418133";
         SendMessage sendMessage = new SendMessage();
@@ -108,6 +110,31 @@ public class TelegramUpdatesBot extends TelegramLongPollingBot {
         } catch (TelegramApiException e) {
             e.printStackTrace();
         }
+    }
+
+    public void logChatInfo(Chat chat) {
+        String sb = "```\n" +
+                "New chat found. ID = " + chat.getId() + "\n" +
+                "isGroupChat      = " + chat.isGroupChat().toString() + "\n" +
+                "isUserChat       = " + chat.isUserChat().toString() + "\n" +
+                "isSuperGroupChat = " + chat.isSuperGroupChat().toString() + "\n" +
+                "isChannelChat    = " + chat.isChannelChat().toString() + "\n" +
+                chat.toString() + "\n```";
+        logMessage(sb);
+    }
+
+    private long checkMessage(Message message) {
+        if (message != null && message.hasText()) {
+            long id = message.getChatId();
+            String sid = message.getChatId().toString();
+            if (id < 0 && whiteList.getList().contains(sid)) {
+                return message.getChatId();
+            } else if (id > 0) {
+                return message.getChatId();
+            }
+            else return 0;
+        }
+        else return 0;
     }
 
 }

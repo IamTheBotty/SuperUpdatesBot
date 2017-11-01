@@ -1,13 +1,17 @@
 package main.java.generator;
 
+import java.util.Collections;
 import java.util.Random;
+import java.util.Stack;
 
 /**
  * Ответ на сообщение
  *
  * Created by apdeit on 31.10.17.
  */
-public class ReplyGenarator {
+public class ReplyGenerator {
+
+    private Stack<String> stack = new Stack<String>();
 
     private String[] keyWords = {
             "апдейт", "Апдейт",
@@ -59,8 +63,13 @@ public class ReplyGenarator {
     }
 
     public String getReply() {
-        Random random = new Random();
-        return messages[random.nextInt(messages.length)];
+        if (stack.empty()) {
+            for (String message : messages) {
+                stack.push(message);
+            }
+            Collections.shuffle(stack);
+        }
+        return stack.pop();
     }
 
 
