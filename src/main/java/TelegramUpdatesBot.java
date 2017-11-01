@@ -39,13 +39,19 @@ public class TelegramUpdatesBot extends TelegramLongPollingBot {
         UpdateGenerator ug = new UpdateGenerator();
 
         Message receivedMsg = update.getMessage();
-//        if (checkChatId(receivedMsg)) {
-//            logChatIds();
-//        }
+        if (checkChatId(receivedMsg)) {
+            logChatIds();
+        }
 
-        if (receivedMsg != null && receivedMsg.hasText() && receivedMsg.getText().contains("getChatId")) {
+        if (receivedMsg != null && receivedMsg.hasText() && receivedMsg.getText().equals("getChatId")) {
             String secretMessage = receivedMsg.getChatId().toString();
             sendMsg(receivedMsg, "This chat ID: " + secretMessage, true);
+        }
+
+        //test
+        if (receivedMsg != null && receivedMsg.hasText() && receivedMsg.getText().equals("ping ping, kd")) {
+            String secretMessage = receivedMsg.getChatId().toString();
+            sendMsg(receivedMsg, "Hello! This is a secret message from me.", true);
         }
 
 
@@ -92,7 +98,7 @@ public class TelegramUpdatesBot extends TelegramLongPollingBot {
     }
 
     public void logMessage(String text) {
-        String logChatId = "";
+        String logChatId = "-312418133";
         SendMessage sendMessage = new SendMessage();
         sendMessage.enableMarkdown(true);
         sendMessage.setChatId(logChatId);
