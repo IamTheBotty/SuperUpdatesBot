@@ -16,15 +16,8 @@ public class Helpers {
      * @return строку с содержим текстового файла
      */
     public static File getFileFromResource(String filePath) {
-        try (InputStream inputStream = Helpers.class.getClassLoader().getResourceAsStream(filePath)) {
-            final File tempFile = File.createTempFile(filePath, ".tmp");
-            try (FileOutputStream out = new FileOutputStream(tempFile)) {
-                IOUtils.copy(inputStream, out);
-            }
-            return tempFile;
-        } catch (IOException e) {
-            return new File("");
-        }
+        ClassLoader classLoader = Helpers.class.getClassLoader();
+        return new File(classLoader.getResource(filePath).getFile());
     }
 
 }

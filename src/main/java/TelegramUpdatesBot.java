@@ -67,7 +67,6 @@ public class TelegramUpdatesBot extends TelegramLongPollingBot {
             } else {
                 sendMsg(receivedMsg, meme, false);
             }
-            sendMsg(receivedMsg, ug.getMessage(), false);
         }
 
         if (checkMessage(receivedMsg) < 0) {
