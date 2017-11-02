@@ -2,6 +2,7 @@ package main.java;
 
 import main.java.generator.UpdateGenerator;
 import main.java.generator.ReplyGenerator;
+import org.telegram.telegrambots.api.methods.send.SendSticker;
 import org.telegram.telegrambots.api.objects.Chat;
 import org.telegram.telegrambots.exceptions.TelegramApiException;
 import org.telegram.telegrambots.ApiContextInitializer;
@@ -61,7 +62,7 @@ public class TelegramUpdatesBot extends TelegramLongPollingBot {
                     sendMsg(receivedMsg, "Коллеги, добрый день!", false);
                 }
                 else if (receivedTxt.contains("/over")) {
-                    sendMsg(receivedMsg, "Коллеги, банковский день окончен", false);
+                    sendSticker(receivedMsg, "CAADAgADWwADIRiFCrJ1z12dq5NVAg");
                 }
                 else if (receivedTxt.contains("/update") || receivedTxt.contains("@FinancialUpdatesBot")) {
                     sendMsg(receivedMsg, ug.getMessage(), false);
@@ -71,11 +72,12 @@ public class TelegramUpdatesBot extends TelegramLongPollingBot {
             else if (receivedTxt.contains("@FinancialUpdatesBot")) {
                 sendMsg(receivedMsg, ug.getMessage(), false);
             }
-            else if (rg.contains(receivedTxt)) {
-                sendMsg(receivedMsg, rg.getReply(), false);
-            } else {
+//            else if (rg.contains(receivedTxt)) {
+//                sendMsg(receivedMsg, rg.getReply(), false);
+//            }
+            else {
                 double d = Math.random();
-                if (d < 0.04) {
+                if (d < 0.005) {
                     sendMsg(receivedMsg, ug.getMessage(), false);
                 }
             }
@@ -99,7 +101,18 @@ public class TelegramUpdatesBot extends TelegramLongPollingBot {
         }
     }
 
-    public void logMessage(String text) {
+    private void sendSticker(Message message, String stickerId) {
+        SendSticker sendSticker = new SendSticker();
+        sendSticker.setSticker(stickerId);
+        sendSticker.setChatId(message.getChatId());
+        try {
+            sendSticker(sendSticker);
+        } catch (TelegramApiException e) {
+            e.printStackTrace();
+        }
+    }
+
+        public void logMessage(String text) {
         String logChatId = "-312418133";
         SendMessage sendMessage = new SendMessage();
         sendMessage.enableMarkdown(true);

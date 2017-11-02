@@ -9,6 +9,8 @@ import java.util.*;
  */
 public class UpdateGenerator {
 
+    private Stack<String> stack = new Stack<String>();
+
     private String[] intro = {"Коллеги, добрый день! "
             , "Коллеги, "
             , "Обещанный апдейт по ЗП:"
@@ -102,7 +104,7 @@ public class UpdateGenerator {
         sj.append(intro[random.nextInt(intro.length)]);
         sj.append("\n\n");
 
-        int mainCount = random.nextInt(2) + 4;
+        int mainCount = random.nextInt(2) + 3;
         List<Integer> numbers = new ArrayList<Integer>();
         for (int i = 0; i < mainCount; i++) {
             numbers.add(random.nextInt(main.length));
@@ -117,6 +119,8 @@ public class UpdateGenerator {
             }
         }
 
+
+
         if (Math.random() < 0.7) {
             sj.append("\n\n");
             sj.append(buy[random.nextInt(buy.length)]);
@@ -128,6 +132,16 @@ public class UpdateGenerator {
         }
 
         return sj.toString();
+    }
+
+    public String getMainString() {
+        if (stack.empty()) {
+            for (String message : main) {
+                stack.push(message);
+            }
+            Collections.shuffle(stack);
+        }
+        return stack.pop();
     }
 
 }
