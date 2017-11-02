@@ -111,8 +111,13 @@ public class TelegramUpdatesBot extends TelegramLongPollingBot {
 //            }
             else {
                 double d = Math.random();
-                if (d < 0.00001) {
-
+                if (d < 0.1) {
+                    String meme = memes.getMeme();
+                    if (meme.startsWith("images")) {
+                        sendPhoto(receivedMsg, getFileFromResource(meme));
+                    } else {
+                        sendMsg(receivedMsg, meme, false);
+                    }
                 }
             }
         } else if (checkMessage(receivedMsg) > 0) {
