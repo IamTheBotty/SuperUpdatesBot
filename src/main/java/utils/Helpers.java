@@ -16,7 +16,7 @@ public class Helpers {
      * @return строку с содержим текстового файла
      */
     public static File getFileFromResource(String filePath) {
-        ClassLoader classLoader = Helpers.class.getClassLoader();
+        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
         return new File(classLoader.getResource(filePath).getFile());
     }
 

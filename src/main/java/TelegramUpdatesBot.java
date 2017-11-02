@@ -67,7 +67,9 @@ public class TelegramUpdatesBot extends TelegramLongPollingBot {
             if (meme.startsWith("images")) {
 //                sendPhoto(receivedMsg, getFileFromResource(meme));
                 StringBuilder result = new StringBuilder("");
-                try (Scanner scanner = new Scanner(getFileFromResource(meme))) {
+                ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+                File file = new File(classLoader.getResource(meme).getFile());
+                try (Scanner scanner = new Scanner(file)) {
 
                     while (scanner.hasNextLine()) {
                         String line = scanner.nextLine();
