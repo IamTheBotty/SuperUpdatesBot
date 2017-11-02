@@ -19,8 +19,10 @@ public class WhiteList {
         whiteList.add("-239504069");
         //Crazy team drinking
         whiteList.add("-201458489");
-        //Yopta.spaceа нет
+        //Yopta.space
         whiteList.add("-1001090868559");
+        //FrontTalks
+        whiteList.add("-126117957");
     }
 
     public void add(String s) {

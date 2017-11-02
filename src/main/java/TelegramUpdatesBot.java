@@ -75,7 +75,7 @@ public class TelegramUpdatesBot extends TelegramLongPollingBot {
                 sendMsg(receivedMsg, rg.getReply(), false);
             } else {
                 double d = Math.random();
-                if (d < 0.08) {
+                if (d < 0.04) {
                     sendMsg(receivedMsg, ug.getMessage(), false);
                 }
             }
