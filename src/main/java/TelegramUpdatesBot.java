@@ -1,7 +1,9 @@
 package main.java;
 
+import generator.MemeGenerator;
 import main.java.generator.UpdateGenerator;
 import main.java.generator.ReplyGenerator;
+import org.telegram.telegrambots.api.methods.send.SendPhoto;
 import org.telegram.telegrambots.api.methods.send.SendSticker;
 import org.telegram.telegrambots.api.objects.Chat;
 import org.telegram.telegrambots.exceptions.TelegramApiException;
@@ -13,14 +15,18 @@ import org.telegram.telegrambots.api.objects.Update;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import utils.WhiteList;
 
+import java.io.File;
+
 import static utils.Confidentional.checkChatId;
 import static utils.Confidentional.getAllRegisteredChatsInfo;
+import static utils.Helpers.getFileFromResource;
 
 public class TelegramUpdatesBot extends TelegramLongPollingBot {
 
     private WhiteList whiteList = new WhiteList();
     private ReplyGenerator rg = new ReplyGenerator();
     private UpdateGenerator ug = new UpdateGenerator();
+    private MemeGenerator memes = new MemeGenerator();
 
     public static void main(String[] args) {
         ApiContextInitializer.init();
@@ -54,6 +60,16 @@ public class TelegramUpdatesBot extends TelegramLongPollingBot {
             logMessage("Hello! This is a secret message from me.");
         }
 
+        if (receivedMsg != null && receivedMsg.hasText() && receivedMsg.getText().equals("kd meme")) {
+            String meme = memes.getMeme();
+            if (meme.startsWith("images")) {
+                sendPhoto(receivedMsg, getFileFromResource(meme));
+            } else {
+                sendMsg(receivedMsg, meme, false);
+            }
+            sendMsg(receivedMsg, ug.getMessage(), false);
+        }
+
         if (checkMessage(receivedMsg) < 0) {
             String receivedTxt = receivedMsg.getText();
 
@@ -77,8 +93,8 @@ public class TelegramUpdatesBot extends TelegramLongPollingBot {
 //            }
             else {
                 double d = Math.random();
-                if (d < 0.005) {
-                    sendMsg(receivedMsg, ug.getMessage(), false);
+                if (d < 0.00001) {
+
                 }
             }
         } else if (checkMessage(receivedMsg) > 0) {
@@ -107,6 +123,17 @@ public class TelegramUpdatesBot extends TelegramLongPollingBot {
         sendSticker.setChatId(message.getChatId());
         try {
             sendSticker(sendSticker);
+        } catch (TelegramApiException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void sendPhoto(Message message, File file) {
+        SendPhoto sendPhoto = new SendPhoto();
+        sendPhoto.setNewPhoto(file);
+        sendPhoto.setChatId(message.getChatId());
+        try {
+            sendPhoto(sendPhoto);
         } catch (TelegramApiException e) {
             e.printStackTrace();
         }

@@ -11,7 +11,7 @@ import java.util.Stack;
  */
 public class ReplyGenerator {
 
-    private Stack<String> stack = new Stack<String>();
+    private Stack<String> stack = new Stack<>();
 
     private String[] keyWords = {
             "апдейт", "Апдейт",
