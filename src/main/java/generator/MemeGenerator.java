@@ -28,8 +28,8 @@ public class MemeGenerator {
 
     public String getMeme() {
         if (stack.empty()) {
-            for (String message : stringMemes) {
-                stack.push(message);
+            for (String meme : stringMemes) {
+                stack.push(meme);
             }
             Collections.shuffle(stack);
         }

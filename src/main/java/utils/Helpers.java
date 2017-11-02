@@ -3,7 +3,6 @@ package utils;
 import org.apache.commons.io.IOUtils;
 
 import java.io.*;
-import java.util.logging.Logger;
 
 /**
  * Created by pavel on 02.11.17.
