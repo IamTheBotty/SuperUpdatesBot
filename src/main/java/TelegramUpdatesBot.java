@@ -16,6 +16,8 @@ import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import utils.WhiteList;
 
 import java.io.File;
+import java.io.IOException;
+import java.util.Scanner;
 
 import static utils.Confidentional.checkChatId;
 import static utils.Confidentional.getAllRegisteredChatsInfo;
@@ -63,7 +65,22 @@ public class TelegramUpdatesBot extends TelegramLongPollingBot {
         if (receivedMsg != null && receivedMsg.hasText() && receivedMsg.getText().equals("kd meme")) {
             String meme = memes.getMeme();
             if (meme.startsWith("images")) {
-                sendPhoto(receivedMsg, getFileFromResource(meme));
+//                sendPhoto(receivedMsg, getFileFromResource(meme));
+                StringBuilder result = new StringBuilder("");
+                try (Scanner scanner = new Scanner(getFileFromResource(meme))) {
+
+                    while (scanner.hasNextLine()) {
+                        String line = scanner.nextLine();
+                        result.append(line).append("\n");
+                    }
+
+                    scanner.close();
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                sendMsg(receivedMsg, result.toString(), false);
             } else {
                 sendMsg(receivedMsg, meme, false);
             }
